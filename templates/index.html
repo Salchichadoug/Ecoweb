@@ -41,8 +41,7 @@
 
             <nav class="main-nav">
                 <a class="nav-link is-active" href="#inicio">Resumen</a>
-                <a class="nav-link" href="#arquitectura">Sistema</a>
-                <a class="nav-link" href="#galeria">Galería</a>
+                <a class="nav-link" href="#contexto-agua">Entorno</a>
                 <a class="nav-link" href="#camara">Cámara</a>
                 <a class="nav-link" href="#revision">Revisión visual</a>
                 <a class="nav-link" href="#historial">Limpiezas</a>
@@ -157,110 +156,46 @@
 
         </section>
 
-        <!-- ARQUITECTURA DEL SISTEMA: FOTO FIJA + TEXTOS INTERACTIVOS -->
-        <section class="story-section reveal-section" id="arquitectura" aria-label="Arquitectura del sistema">
-            <div class="section-header">
-                <p class="eyebrow">HARDWARE Y TELEMETRÍA</p>
-                <h2 class="interactive-title">Cómo funciona el dispositivo EcoDrop</h2>
-                <p class="section-lead">Seleccioná cada módulo para leer su función sin mover la fotografía del equipo.</p>
-            </div>
-
+        <!-- BLOQUE 1 INTERCALADO: TEXTO + FOTO DE RÍO -->
+        <section class="story-section reveal-section" id="contexto-agua">
             <div class="architecture-layout">
-                <div class="static-photo-frame">
-                    <img
-                        src="{{ url_for('static', filename='82556.jpeg') }}"
-                        alt="Diseño del recolector EcoDrop con canal y turbina central"
-                        class="static-photo"
-                    >
-                    <div class="photo-caption-bar">
-                        <span>ECODROP 01 · UNIDAD DE CAMPO</span>
-                        <strong id="active-module-tag">Controlador Raspberry Pi</strong>
-                    </div>
-                </div>
-
                 <div class="interactive-specs">
-                    <div class="spec-tabs" role="tablist" aria-label="Componentes del sistema">
-                        <button type="button" class="spec-tab is-selected" data-module="rpi" data-tag="Controlador Raspberry Pi" data-title="Controlador principal (Raspberry Pi)" data-detail="Coordina la captura de imagen, la lectura del sensor ultrasónico y el envío de datos al panel web EcoWeb.">
-                            Raspberry Pi
+                    <span class="card-tag">ENTORNO FLUVIAL</span>
+                    <h2 class="interactive-title">Operación en ríos y cursos de agua</h2>
+                    <p class="section-lead">
+                        El sistema está pensado para acompañar tareas de limpieza en ríos y espejos de agua rodeados de vegetación, centralizando el control desde la web sin depender de revisiones a ciegas.
+                    </p>
+                    <div class="spec-tabs" role="tablist" aria-label="Aspectos del entorno">
+                        <button type="button" class="spec-tab is-selected" data-tag="Entorno fluvial" data-title="Cursos de agua y riberas" data-detail="Permite organizar la supervisión en tramos de río y zonas donde se acumulan residuos arrastrados por la corriente.">
+                            Ríos y riberas
                         </button>
-                        <button type="button" class="spec-tab" data-module="camara" data-tag="Módulo de cámara" data-title="Supervisión visual por cámara" data-detail="Permite inspeccionar el estado del contenedor y verificar la acumulación de residuos flotantes.">
-                            Cámara
+                        <button type="button" class="spec-tab" data-tag="Controlador" data-title="Raspberry Pi + batería" data-detail="El equipo funciona con Raspberry Pi, cámara y sensor ultrasónico alimentados a batería para registrar datos y apoyar la gestión.">
+                            Hardware
                         </button>
-                        <button type="button" class="spec-tab" data-module="ultrasonico" data-tag="Sensor ultrasónico" data-title="Medición de nivel con sensor ultrasónico" data-detail="Estima la distancia y el llenado interno para anticipar cuándo se acerca el momento de vaciar.">
-                            Sensor ultrasónico
-                        </button>
-                        <button type="button" class="spec-tab" data-module="bateria" data-tag="Alimentación a batería" data-title="Autonomía mediante batería" data-detail="Alimenta el controlador, la cámara y el sensor de forma continua para operar en puntos sin red eléctrica directa.">
-                            Batería
+                        <button type="button" class="spec-tab" data-tag="Seguimiento" data-title="Revisión visual e historial" data-detail="Combina la evaluación del estado del recolector con el registro de limpiezas para saber cuándo vaciar o cambiar filtro.">
+                            Mantenimiento
                         </button>
                     </div>
-
                     <article class="spec-detail-box interactive-card" tabindex="0">
-                        <span class="spec-pill">DETALLE SELECCIONADO</span>
-                        <h3 class="interactive-title" id="spec-detail-title">Controlador principal (Raspberry Pi)</h3>
+                        <span class="spec-pill">DETALLE ACTIVO</span>
+                        <h3 class="interactive-title" id="spec-detail-title">Cursos de agua y riberas</h3>
                         <p id="spec-detail-text">
-                            Coordina la captura de imagen, la lectura del sensor ultrasónico y el envío de datos al panel web EcoWeb.
+                            Permite organizar la supervisión en tramos de río y zonas donde se acumulan residuos arrastrados por la corriente.
                         </p>
                     </article>
                 </div>
-            </div>
-        </section>
 
-        <!-- GALERÍA CON FOTOS ESTÁTICAS Y TARJETAS DE TEXTO INTERACTIVAS -->
-        <section class="story-section reveal-section" id="galeria" aria-label="Galería del proyecto">
-            <div class="section-header">
-                <p class="eyebrow">REGISTRO VISUAL</p>
-                <h2 class="interactive-title">Entorno, residuos y superficie de agua</h2>
-                <p class="section-lead">Pasá el cursor o hacé clic sobre cualquier tarjeta para destacar su texto y ampliar la nota.</p>
-            </div>
-
-            <div class="gallery-grid">
-                <article class="gallery-card interactive-card" tabindex="0" data-expandable>
-                    <div class="gallery-photo-wrap">
-                        <img
-                            src="{{ url_for('static', filename='82590.jpeg') }}"
-                            alt="Entorno de río rodeado de vegetación donde opera el sistema"
-                            class="static-photo"
-                        >
+                <div class="static-photo-frame">
+                    <img
+                        src="{{ url_for('static', filename='82590.jpeg') }}"
+                        alt="Entorno de río rodeado de vegetación"
+                        class="static-photo"
+                    >
+                    <div class="photo-caption-bar">
+                        <span>ENTORNO NATURAL</span>
+                        <strong id="active-module-tag">Entorno fluvial</strong>
                     </div>
-                    <div class="gallery-body">
-                        <span class="card-tag">01 · ENTORNO</span>
-                        <h3 class="interactive-title">Ríos y cursos de agua</h3>
-                        <p>Pensado para entornos fluviales y espejos de agua donde se busca preservar la vegetación y la ribera.</p>
-                        <p class="extra-note">Nota: permite planificar puntos de colocación y revisiones periódicas en el río.</p>
-                    </div>
-                </article>
-
-                <article class="gallery-card interactive-card" tabindex="0" data-expandable>
-                    <div class="gallery-photo-wrap">
-                        <img
-                            src="{{ url_for('static', filename='82592.jpeg') }}"
-                            alt="Bolsas y residuos plásticos flotando en el agua"
-                            class="static-photo"
-                        >
-                    </div>
-                    <div class="gallery-body">
-                        <span class="card-tag">02 · RESIDUOS</span>
-                        <h3 class="interactive-title">Plásticos en suspensión</h3>
-                        <p>Enfocado en detectar y contener bolsas y desechos livianos que circulan cerca de la superficie.</p>
-                        <p class="extra-note">Nota: la revisión visual y el historial ayudan a programar el vaciado a tiempo.</p>
-                    </div>
-                </article>
-
-                <article class="gallery-card interactive-card" tabindex="0" data-expandable>
-                    <div class="gallery-photo-wrap">
-                        <img
-                            src="{{ url_for('static', filename='82589.jpeg') }}"
-                            alt="Reflejos y movimiento en la superficie del agua"
-                            class="static-photo"
-                        >
-                    </div>
-                    <div class="gallery-body">
-                        <span class="card-tag">03 · SUPERFICIE</span>
-                        <h3 class="interactive-title">Dinámica del agua</h3>
-                        <p>El movimiento y los reflejos en la superficie condicionan el flujo y la llegada de residuos hacia el recolector.</p>
-                        <p class="extra-note">Nota: el seguimiento desde EcoWeb centraliza el estado del equipo y sus limpiezas.</p>
-                    </div>
-                </article>
+                </div>
             </div>
         </section>
 
@@ -317,6 +252,62 @@
                 </form>
 
             </article>
+        </section>
+
+        <!-- BLOQUE 2 INTERCALADO: FOTO DE RESIDUOS + TEXTO -->
+        <section class="story-section reveal-section">
+            <div class="architecture-layout">
+                <div class="static-photo-frame">
+                    <img
+                        src="{{ url_for('static', filename='82592.jpeg') }}"
+                        alt="Residuos plásticos flotando en el agua"
+                        class="static-photo"
+                    >
+                    <div class="photo-caption-bar">
+                        <span>RESIDUOS FLOTANTES</span>
+                        <strong>DETECCIÓN Y RECOLECCIÓN</strong>
+                    </div>
+                </div>
+
+                <div class="spec-detail-box interactive-card" tabindex="0" data-expandable>
+                    <span class="card-tag">MOTIVO DEL PROYECTO</span>
+                    <h2 class="interactive-title">Plásticos y desechos en el agua</h2>
+                    <p>
+                        Bolsas y plásticos livianos se desplazan con la corriente y afectan el entorno acuático. Registrar el estado visual y programar cada limpieza ayuda a mantener el recolector operativo antes de que alcance su límite.
+                    </p>
+                    <p class="extra-note">
+                        Seleccioná o pasá el cursor: el registro manual y el historial permiten ordenar las tareas de vaciado y cambio de filtro.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 3 INTERCALADO: TEXTO + FOTO DE SUPERFICIE / PROTOTIPO -->
+        <section class="story-section reveal-section">
+            <div class="architecture-layout">
+                <div class="spec-detail-box interactive-card" tabindex="0" data-expandable>
+                    <span class="card-tag">FLUJO Y DISEÑO</span>
+                    <h2 class="interactive-title">Superficie del agua y estructura del recolector</h2>
+                    <p>
+                        El movimiento del agua y el diseño del dispositivo trabajan en conjunto para guiar y contener los residuos superficiales, facilitando el control posterior desde el panel.
+                    </p>
+                    <p class="extra-note">
+                        Seleccioná o pasá el cursor: ideal para contrastar el estado observado en el agua con los registros guardados más abajo.
+                    </p>
+                </div>
+
+                <div class="static-photo-frame">
+                    <img
+                        src="{{ url_for('static', filename='82556.jpeg') }}"
+                        alt="Diseño del recolector EcoDrop"
+                        class="static-photo"
+                    >
+                    <div class="photo-caption-bar">
+                        <span>DISEÑO ECODROP</span>
+                        <strong>ESTRUCTURA Y FLUJO</strong>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- HISTORIAL Y FORMULARIO DE LIMPIEZAS -->
@@ -420,7 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 2. Pestañas interactivas de componentes del sistema
+    // 2. Pestañas interactivas de texto
     var tabs = document.querySelectorAll(".spec-tab");
     var tagEl = document.getElementById("active-module-tag");
     var titleEl = document.getElementById("spec-detail-title");
@@ -436,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 3. Selección de tarjetas de galería para destacar y desplegar nota extra
+    // 3. Selección de bloques interactivos para destacar y desplegar nota extra
     var cards = document.querySelectorAll("[data-expandable]");
     cards.forEach(function (card) {
         card.addEventListener("click", function () {
