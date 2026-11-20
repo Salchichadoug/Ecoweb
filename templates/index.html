@@ -156,52 +156,7 @@
 
         </section>
 
-        <!-- PROTOTIPO: ÚNICA FOTO ESTÁTICA + TEXTO INTERACTIVO -->
-        <section class="story-section" id="prototipo" aria-label="Prototipo EcoDrop">
-            <div class="architecture-layout">
-                <div class="static-photo-frame">
-                    <img
-                        src="{{ url_for('static', filename='82556.jpeg') }}"
-                        alt="Prototipo del recolector EcoDrop con canal y turbina central"
-                        class="static-photo"
-                    >
-                    <div class="photo-caption-bar">
-                        <span>ECODROP 01 · PROTOTIPO</span>
-                        <strong id="active-module-tag">Diseño del recolector</strong>
-                    </div>
-                </div>
-
-                <div class="interactive-specs">
-                    <span class="card-tag">EQUIPO Y CONTROL</span>
-                    <h2 class="interactive-title">Prototipo EcoDrop y operación</h2>
-                    <p class="section-lead">
-                        Seleccioná cada pestaña para leer los detalles del prototipo sin mover la imagen.
-                    </p>
-
-                    <div class="spec-tabs" role="tablist" aria-label="Detalles del prototipo">
-                        <button type="button" class="spec-tab is-selected" data-tag="Diseño del recolector" data-title="Estructura del recolector" data-detail="Su diseño permite canalizar y retener residuos flotantes en cursos de agua, facilitando la inspección y el vaciado.">
-                            Prototipo
-                        </button>
-                        <button type="button" class="spec-tab" data-tag="Controlador" data-title="Raspberry Pi y batería" data-detail="Integra Raspberry Pi, cámara y sensor ultrasónico alimentados a batería para apoyar el monitoreo desde el panel.">
-                            Hardware
-                        </button>
-                        <button type="button" class="spec-tab" data-tag="Mantenimiento" data-title="Revisión visual e historial" data-detail="Combina el estado observado con el registro de limpiezas para ordenar vaciados y cambios de filtro.">
-                            Mantenimiento
-                        </button>
-                    </div>
-
-                    <article class="spec-detail-box interactive-card" tabindex="0">
-                        <span class="spec-pill">DETALLE ACTIVO</span>
-                        <h3 class="interactive-title" id="spec-detail-title">Estructura del recolector</h3>
-                        <p id="spec-detail-text">
-                            Su diseño permite canalizar y retener residuos flotantes en cursos de agua, facilitando la inspección y el vaciado.
-                        </p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- CÁMARA EN VIVO -->
+        <!-- CÁMARA EN VIVO (ESTRUCTURA ORIGINAL EXACTA) -->
         <section class="content-grid" aria-label="Cámara del EcoDrop">
             <article class="panel camera-panel" id="camara">
 
@@ -254,6 +209,54 @@
                 </form>
 
             </article>
+        </section>
+
+        <!-- BLOQUE INTERCALADO: ÚNICA FOTO DEL PROTOTIPO + TEXTO INTERACTIVO -->
+        <section class="story-section" id="prototipo" aria-label="Prototipo EcoDrop">
+            <div class="architecture-layout">
+                <div class="static-photo-frame">
+                    <img
+                        src="{{ url_for('static', filename='82556.jpeg') }}"
+                        alt="Prototipo del recolector EcoDrop"
+                        class="static-photo"
+                    >
+                    <div class="photo-caption-bar">
+                        <span>ECODROP 01 · PROTOTIPO</span>
+                        <strong id="active-module-tag">Estructura del recolector</strong>
+                    </div>
+                </div>
+
+                <div class="interactive-specs">
+                    <span class="card-tag">PROTOTIPO Y OPERACIÓN</span>
+                    <h2 class="interactive-title">Diseño del recolector y seguimiento</h2>
+                    <p class="section-lead">
+                        Seleccioná una pestaña o pasá el cursor por los bloques para ver los detalles sin mover la fotografía.
+                    </p>
+
+                    <div class="spec-tabs" role="tablist" aria-label="Detalles del prototipo">
+                        <button type="button" class="spec-tab is-selected" data-tag="Estructura del recolector" data-title="Diseño del prototipo EcoDrop" data-detail="Canaliza y contiene residuos flotantes en cursos de agua para facilitar la revisión y el mantenimiento.">
+                            Prototipo
+                        </button>
+                        <button type="button" class="spec-tab" data-tag="Controlador" data-title="Raspberry Pi y batería" data-detail="Integra Raspberry Pi, cámara y sensor ultrasónico alimentados a batería para apoyar el control desde el panel.">
+                            Hardware
+                        </button>
+                        <button type="button" class="spec-tab" data-tag="Mantenimiento" data-title="Revisión visual e historial" data-detail="Permite registrar el estado observado y las limpiezas realizadas para ordenar vaciados y cambios de filtro.">
+                            Limpiezas
+                        </button>
+                    </div>
+
+                    <article class="spec-detail-box interactive-card" tabindex="0" data-expandable>
+                        <span class="spec-pill">DETALLE ACTIVO</span>
+                        <h3 class="interactive-title" id="spec-detail-title">Diseño del prototipo EcoDrop</h3>
+                        <p id="spec-detail-text">
+                            Canaliza y contiene residuos flotantes en cursos de agua para facilitar la revisión y el mantenimiento.
+                        </p>
+                        <p class="extra-note">
+                            Tip: hacé clic o pasá el cursor para resaltar este bloque de texto.
+                        </p>
+                    </article>
+                </div>
+            </div>
         </section>
 
         <!-- HISTORIAL Y FORMULARIO DE LIMPIEZAS -->
@@ -348,6 +351,19 @@ document.addEventListener("DOMContentLoaded", function () {
             if (tagEl) tagEl.textContent = tab.getAttribute("data-tag") || "";
             if (titleEl) titleEl.textContent = tab.getAttribute("data-title") || "";
             if (textEl) textEl.textContent = tab.getAttribute("data-detail") || "";
+        });
+    });
+
+    var cards = document.querySelectorAll("[data-expandable]");
+    cards.forEach(function (card) {
+        card.addEventListener("click", function () {
+            card.classList.toggle("is-selected");
+        });
+        card.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                card.classList.toggle("is-selected");
+            }
         });
     });
 });
