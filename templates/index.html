@@ -41,7 +41,7 @@
 
             <nav class="main-nav">
                 <a class="nav-link is-active" href="#inicio">Resumen</a>
-                <a class="nav-link" href="#contexto-agua">Entorno</a>
+                <a class="nav-link" href="#prototipo">Prototipo</a>
                 <a class="nav-link" href="#camara">Cámara</a>
                 <a class="nav-link" href="#revision">Revisión visual</a>
                 <a class="nav-link" href="#historial">Limpiezas</a>
@@ -86,7 +86,7 @@
         </section>
 
         <!-- TARJETAS DE RESUMEN -->
-        <section class="summary-grid reveal-section" aria-label="Resumen del dispositivo">
+        <section class="summary-grid" aria-label="Resumen del dispositivo">
 
             <article class="summary-card device-card interactive-card">
                 <div class="card-topline">
@@ -156,57 +156,59 @@
 
         </section>
 
-        <!-- BLOQUE 1 INTERCALADO: TEXTO + FOTO DE RÍO -->
-        <section class="story-section reveal-section" id="contexto-agua">
+        <!-- PROTOTIPO: ÚNICA FOTO ESTÁTICA + TEXTO INTERACTIVO -->
+        <section class="story-section" id="prototipo" aria-label="Prototipo EcoDrop">
             <div class="architecture-layout">
-                <div class="interactive-specs">
-                    <span class="card-tag">ENTORNO FLUVIAL</span>
-                    <h2 class="interactive-title">Operación en ríos y cursos de agua</h2>
-                    <p class="section-lead">
-                        El sistema está pensado para acompañar tareas de limpieza en ríos y espejos de agua rodeados de vegetación, centralizando el control desde la web sin depender de revisiones a ciegas.
-                    </p>
-                    <div class="spec-tabs" role="tablist" aria-label="Aspectos del entorno">
-                        <button type="button" class="spec-tab is-selected" data-tag="Entorno fluvial" data-title="Cursos de agua y riberas" data-detail="Permite organizar la supervisión en tramos de río y zonas donde se acumulan residuos arrastrados por la corriente.">
-                            Ríos y riberas
-                        </button>
-                        <button type="button" class="spec-tab" data-tag="Controlador" data-title="Raspberry Pi + batería" data-detail="El equipo funciona con Raspberry Pi, cámara y sensor ultrasónico alimentados a batería para registrar datos y apoyar la gestión.">
-                            Hardware
-                        </button>
-                        <button type="button" class="spec-tab" data-tag="Seguimiento" data-title="Revisión visual e historial" data-detail="Combina la evaluación del estado del recolector con el registro de limpiezas para saber cuándo vaciar o cambiar filtro.">
-                            Mantenimiento
-                        </button>
-                    </div>
-                    <article class="spec-detail-box interactive-card" tabindex="0">
-                        <span class="spec-pill">DETALLE ACTIVO</span>
-                        <h3 class="interactive-title" id="spec-detail-title">Cursos de agua y riberas</h3>
-                        <p id="spec-detail-text">
-                            Permite organizar la supervisión en tramos de río y zonas donde se acumulan residuos arrastrados por la corriente.
-                        </p>
-                    </article>
-                </div>
-
                 <div class="static-photo-frame">
                     <img
-                        src="{{ url_for('static', filename='82590.jpeg') }}"
-                        alt="Entorno de río rodeado de vegetación"
+                        src="{{ url_for('static', filename='82556.jpeg') }}"
+                        alt="Prototipo del recolector EcoDrop con canal y turbina central"
                         class="static-photo"
                     >
                     <div class="photo-caption-bar">
-                        <span>ENTORNO NATURAL</span>
-                        <strong id="active-module-tag">Entorno fluvial</strong>
+                        <span>ECODROP 01 · PROTOTIPO</span>
+                        <strong id="active-module-tag">Diseño del recolector</strong>
                     </div>
+                </div>
+
+                <div class="interactive-specs">
+                    <span class="card-tag">EQUIPO Y CONTROL</span>
+                    <h2 class="interactive-title">Prototipo EcoDrop y operación</h2>
+                    <p class="section-lead">
+                        Seleccioná cada pestaña para leer los detalles del prototipo sin mover la imagen.
+                    </p>
+
+                    <div class="spec-tabs" role="tablist" aria-label="Detalles del prototipo">
+                        <button type="button" class="spec-tab is-selected" data-tag="Diseño del recolector" data-title="Estructura del recolector" data-detail="Su diseño permite canalizar y retener residuos flotantes en cursos de agua, facilitando la inspección y el vaciado.">
+                            Prototipo
+                        </button>
+                        <button type="button" class="spec-tab" data-tag="Controlador" data-title="Raspberry Pi y batería" data-detail="Integra Raspberry Pi, cámara y sensor ultrasónico alimentados a batería para apoyar el monitoreo desde el panel.">
+                            Hardware
+                        </button>
+                        <button type="button" class="spec-tab" data-tag="Mantenimiento" data-title="Revisión visual e historial" data-detail="Combina el estado observado con el registro de limpiezas para ordenar vaciados y cambios de filtro.">
+                            Mantenimiento
+                        </button>
+                    </div>
+
+                    <article class="spec-detail-box interactive-card" tabindex="0">
+                        <span class="spec-pill">DETALLE ACTIVO</span>
+                        <h3 class="interactive-title" id="spec-detail-title">Estructura del recolector</h3>
+                        <p id="spec-detail-text">
+                            Su diseño permite canalizar y retener residuos flotantes en cursos de agua, facilitando la inspección y el vaciado.
+                        </p>
+                    </article>
                 </div>
             </div>
         </section>
 
         <!-- CÁMARA EN VIVO -->
-        <section class="content-grid reveal-section" aria-label="Cámara del EcoDrop">
-            <article class="panel camera-panel interactive-card" id="camara">
+        <section class="content-grid" aria-label="Cámara del EcoDrop">
+            <article class="panel camera-panel" id="camara">
 
                 <div class="panel-heading">
                     <div>
                         <p class="eyebrow">VISTA DEL DISPOSITIVO</p>
-                        <h2 class="interactive-title">Cámara en tiempo real</h2>
+                        <h2>Cámara en tiempo real</h2>
                     </div>
                     <span class="prepared-tag">
                         <i></i> PREPARADA
@@ -254,70 +256,14 @@
             </article>
         </section>
 
-        <!-- BLOQUE 2 INTERCALADO: FOTO DE RESIDUOS + TEXTO -->
-        <section class="story-section reveal-section">
-            <div class="architecture-layout">
-                <div class="static-photo-frame">
-                    <img
-                        src="{{ url_for('static', filename='82592.jpeg') }}"
-                        alt="Residuos plásticos flotando en el agua"
-                        class="static-photo"
-                    >
-                    <div class="photo-caption-bar">
-                        <span>RESIDUOS FLOTANTES</span>
-                        <strong>DETECCIÓN Y RECOLECCIÓN</strong>
-                    </div>
-                </div>
-
-                <div class="spec-detail-box interactive-card" tabindex="0" data-expandable>
-                    <span class="card-tag">MOTIVO DEL PROYECTO</span>
-                    <h2 class="interactive-title">Plásticos y desechos en el agua</h2>
-                    <p>
-                        Bolsas y plásticos livianos se desplazan con la corriente y afectan el entorno acuático. Registrar el estado visual y programar cada limpieza ayuda a mantener el recolector operativo antes de que alcance su límite.
-                    </p>
-                    <p class="extra-note">
-                        Seleccioná o pasá el cursor: el registro manual y el historial permiten ordenar las tareas de vaciado y cambio de filtro.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- BLOQUE 3 INTERCALADO: TEXTO + FOTO DE SUPERFICIE / PROTOTIPO -->
-        <section class="story-section reveal-section">
-            <div class="architecture-layout">
-                <div class="spec-detail-box interactive-card" tabindex="0" data-expandable>
-                    <span class="card-tag">FLUJO Y DISEÑO</span>
-                    <h2 class="interactive-title">Superficie del agua y estructura del recolector</h2>
-                    <p>
-                        El movimiento del agua y el diseño del dispositivo trabajan en conjunto para guiar y contener los residuos superficiales, facilitando el control posterior desde el panel.
-                    </p>
-                    <p class="extra-note">
-                        Seleccioná o pasá el cursor: ideal para contrastar el estado observado en el agua con los registros guardados más abajo.
-                    </p>
-                </div>
-
-                <div class="static-photo-frame">
-                    <img
-                        src="{{ url_for('static', filename='82556.jpeg') }}"
-                        alt="Diseño del recolector EcoDrop"
-                        class="static-photo"
-                    >
-                    <div class="photo-caption-bar">
-                        <span>DISEÑO ECODROP</span>
-                        <strong>ESTRUCTURA Y FLUJO</strong>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- HISTORIAL Y FORMULARIO DE LIMPIEZAS -->
-        <section class="lower-grid reveal-section" aria-label="Historial de limpiezas">
-            <article class="panel history-panel interactive-card" id="historial">
+        <section class="lower-grid" aria-label="Historial de limpiezas">
+            <article class="panel history-panel" id="historial">
 
                 <div class="panel-heading">
                     <div>
                         <p class="eyebrow">MANTENIMIENTO</p>
-                        <h2 class="interactive-title">Historial de limpiezas</h2>
+                        <h2>Historial de limpiezas</h2>
                     </div>
 
                     <span class="history-count" id="history-count">0 registros</span>
@@ -390,28 +336,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. Aparición suave de secciones al hacer scroll (las fotos permanecen fijas)
-    var sections = document.querySelectorAll(".reveal-section");
-    if ("IntersectionObserver" in window && sections.length > 0) {
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("is-visible");
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12 });
-
-        sections.forEach(function (sec) {
-            observer.observe(sec);
-        });
-    } else {
-        sections.forEach(function (sec) {
-            sec.classList.add("is-visible");
-        });
-    }
-
-    // 2. Pestañas interactivas de texto
     var tabs = document.querySelectorAll(".spec-tab");
     var tagEl = document.getElementById("active-module-tag");
     var titleEl = document.getElementById("spec-detail-title");
@@ -424,20 +348,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (tagEl) tagEl.textContent = tab.getAttribute("data-tag") || "";
             if (titleEl) titleEl.textContent = tab.getAttribute("data-title") || "";
             if (textEl) textEl.textContent = tab.getAttribute("data-detail") || "";
-        });
-    });
-
-    // 3. Selección de bloques interactivos para destacar y desplegar nota extra
-    var cards = document.querySelectorAll("[data-expandable]");
-    cards.forEach(function (card) {
-        card.addEventListener("click", function () {
-            card.classList.toggle("is-selected");
-        });
-        card.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                card.classList.toggle("is-selected");
-            }
         });
     });
 });
