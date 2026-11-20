@@ -1,0 +1,9 @@
+# Created by pytest automatically.
+*venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+flask.env
+*.db
+*.sqlite3

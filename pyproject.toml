@@ -1,0 +1,10 @@
+[tool.coverage.run]
+source = ["app"]
+omit = [
+    "venv/*",
+    "tests/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 70

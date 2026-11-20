@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#A0C5DE">
+
+    <title>EcoWeb | Panel EcoDrop</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+
+<body data-user-role="{{ current_user.rol if current_user.is_authenticated else 'invitado' }}" data-user-name="{{ current_user.nombre if current_user.is_authenticated else '' }}">
+
+<!-- PANTALLA PRINCIPAL / WELCOME SCREEN -->
+<div class="welcome-screen" id="welcome-screen">
+    <div class="welcome-overlay"></div>
+    <div class="welcome-content">
+        <p class="welcome-eyebrow">PLATAFORMA ECODROP</p>
+        <h1 class="welcome-title">ECOWEB</h1>
+        <p class="welcome-subtitle">Monitoreo inteligente para el recolector de residuos flotantes</p>
+        <button class="welcome-btn" id="enter-btn">
+            Ingresar al panel <span>→</span>
+        </button>
+    </div>
+</div>
+
+<!-- CONTENEDOR DE LA APLICACIÓN -->
+<div class="app-shell" id="app-shell">
+
+    <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+    <header class="top-nav-bar">
+        <div class="nav-container">
+            <a class="brand" href="#inicio" aria-label="EcoWeb, inicio">
+                <span class="brand-mark" aria-hidden="true">E</span>
+                <span class="brand-copy">
+                    <strong>eco<span>web</span></strong>
+                </span>
+            </a>
+
+            <nav class="main-nav">
+                <a class="nav-link is-active" href="#inicio">Resumen</a>
+                <a class="nav-link" href="#camara">Cámara</a>
+                <a class="nav-link" href="#revision">Revisión visual</a>
+                <a class="nav-link" href="#historial">Limpiezas</a>
+                {% if current_user.is_authenticated and current_user.rol == "administrador" %}
+                    <a class="nav-link" href="{{ url_for('panel_admin') }}">Admin</a>
+                {% endif %}
+            </nav>
+
+            <div class="nav-badge">
+                {% if current_user.is_authenticated %}
+                    <span class="demo-mark">{{ current_user.nombre }} · {{ current_user.rol }}</span>
+                    <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
+                {% else %}
+                    <span class="demo-mark">● ENTORNO DE PRUEBA</span>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content" id="inicio">
+
+        <!-- BANNER DE ENCABEZADO DENTRO DEL PANEL -->
+        <section class="hero-banner">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p class="eyebrow">MONITOREO DEL DISPOSITIVO · ECODROP 01</p>
+                    <h1>ECOWEB <span>/ PANEL DE CONTROL</span></h1>
+                    <p class="heading-subtitle">
+                        Sistema inteligente de supervisión y gestión para tu recolector de residuos flotantes.
+                    </p>
+                </div>
+
+                <div class="hero-actions">
+                    <span class="updated-label" id="updated-at">Vista de prueba</span>
+                    <button class="button button-dark" id="refresh-demo" type="button">
+                        ↻ Actualizar vista
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TARJETAS DE RESUMEN -->
+        <section class="summary-grid" aria-label="Resumen del dispositivo">
+
+            <article class="summary-card device-card">
+                <div class="card-topline">
+                    ESTADO DEL ECODROP <span>01</span>
+                </div>
+
+                <div class="summary-main">
+                    <i class="status-indicator"></i>
+                    <div>
+                        <h2 id="device-status">En funcionamiento</h2>
+                        <p id="device-connection">Estado de demostración</p>
+                    </div>
+                </div>
+
+                <div class="card-foot">
+                    ÚLTIMA SEÑAL
+                    <strong id="signal-time">Sin conexión real</strong>
+                </div>
+            </article>
+
+            <article class="summary-card visual-review-card" id="revision">
+                <div class="card-topline">
+                    REVISIÓN VISUAL <span>02</span>
+                </div>
+
+                <div class="visual-reading">
+                    <span class="review-indicator" aria-hidden="true"></span>
+                    <div>
+                        <strong id="visual-status-label">Pendiente de revisión</strong>
+                        <p>La persona a cargo evalúa la imagen.</p>
+                    </div>
+                </div>
+
+                <label class="review-control">
+                    Estado observado
+                    <select id="visual-status">
+                        <option value="pending">Pendiente de revisión</option>
+                        <option value="available">Todavía hay espacio</option>
+                        <option value="filling">Se acerca al límite</option>
+                        <option value="cleaning">Requiere limpieza</option>
+                    </select>
+                </label>
+
+                <div class="card-foot">
+                    ACTUALIZACIÓN MANUAL
+                    <span>Sin sensores conectados</span>
+                </div>
+            </article>
+
+            <article class="summary-card cleaning-card">
+                <div class="card-topline">
+                    ÚLTIMA LIMPIEZA <span>03</span>
+                </div>
+
+                <div class="cleaning-date">
+                    <i aria-hidden="true">▦</i>
+                    <div>
+                        <h2 id="last-cleaning-date">Sin registros</h2>
+                        <p id="last-cleaning-time">--:-- h</p>
+                    </div>
+                </div>
+
+                <div class="card-foot">
+                    REGISTRO DE MANTENIMIENTO
+                </div>
+            </article>
+
+        </section>
+
+        <!-- CÁMARA EN VIVO -->
+        <section class="content-grid" aria-label="Cámara del EcoDrop">
+            <article class="panel camera-panel" id="camara">
+
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">VISTA DEL DISPOSITIVO</p>
+                        <h2>Cámara en tiempo real</h2>
+                    </div>
+                    <span class="prepared-tag">
+                        <i></i> PREPARADA
+                    </span>
+                </div>
+
+                <div class="camera-screen" aria-label="Espacio preparado para la transmisión de la cámara">
+                    <div class="camera-grid" aria-hidden="true"></div>
+
+                    <div class="camera-placeholder">
+                        <span class="camera-symbol">CAM</span>
+                        <strong>La imagen aparecerá aquí</strong>
+                        <small>La cámara todavía no está conectada</small>
+                    </div>
+
+                    <span class="camera-screen-label">ECODROP 01 · VISTA EN VIVO</span>
+                    <span class="camera-screen-state"><i></i> SIN SEÑAL</span>
+                </div>
+
+                <form class="camera-form" id="camera-form">
+                    <div class="form-heading">
+                        <strong>Configuración de cámara</strong>
+                        <span>Configuración de prueba</span>
+                    </div>
+
+                    <div class="camera-fields">
+                        <label>
+                            IP de la cámara
+                            <input id="camera-ip" type="text" placeholder="Ej.: 192.168.1.50" autocomplete="off">
+                        </label>
+
+                        <label>
+                            URL del streaming
+                            <input id="camera-url" type="url" placeholder="URL de la transmisión" autocomplete="off">
+                        </label>
+
+                        <button class="button button-outline" type="submit">Guardar</button>
+                    </div>
+
+                    <p class="form-feedback" id="camera-feedback" aria-live="polite">
+                        La cámara no está conectada. Guardar estos datos no activa por sí solo la transmisión.
+                    </p>
+                </form>
+
+            </article>
+        </section>
+
+        <!-- HISTORIAL Y FORMULARIO DE LIMPIEZAS -->
+        <section class="lower-grid" aria-label="Historial de limpiezas">
+            <article class="panel history-panel" id="historial">
+
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">MANTENIMIENTO</p>
+                        <h2>Historial de limpiezas</h2>
+                    </div>
+
+                    <span class="history-count" id="history-count">0 registros</span>
+                </div>
+
+                {% if current_user.is_authenticated and current_user.rol in ["trabajador", "administrador"] %}
+                    <form class="cleaning-form" id="cleaning-form">
+                        <label for="cleaning-person">
+                            Responsable
+                            <input id="cleaning-person" name="responsable" type="text" placeholder="Nombre de quien limpia" maxlength="100" autocomplete="name" required>
+                        </label>
+
+                        <label for="cleaning-date">
+                            Fecha y hora
+                            <input id="cleaning-date" name="fecha" type="datetime-local" required>
+                        </label>
+
+                        <label for="cleaning-action">
+                            Tarea realizada
+                            <select id="cleaning-action" name="accion" required>
+                                <option value="">Seleccionar tarea</option>
+                                <option value="vaciado">Solo se vació el recolector</option>
+                                <option value="filtro">Se cambió el filtro</option>
+                                <option value="ambos">Se vació y se cambió el filtro</option>
+                            </select>
+                        </label>
+
+                        <label for="cleaning-observations">
+                            Observaciones (opcional)
+                            <textarea id="cleaning-observations" name="observaciones" rows="3" maxlength="500" placeholder="Estado del filtro, residuos encontrados..."></textarea>
+                        </label>
+
+                        <button class="button button-outline" type="submit">+ Registrar limpieza</button>
+                    </form>
+
+                    <p class="form-feedback" id="cleaning-feedback" aria-live="polite">
+                        Completá los datos para registrar una limpieza.
+                    </p>
+
+                    <div class="history-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>FECHA Y HORA</th>
+                                    <th>RESPONSABLE</th>
+                                    <th>TAREA</th>
+                                    <th>OBSERVACIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-rows">
+                                <tr><td colspan="4">Cargando historial...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="form-feedback" id="user-last-cleaning-summary" aria-live="polite">
+                        Última limpieza realizada: consultando...
+                    </p>
+                {% endif %}
+            </article>
+        </section>
+
+        <footer class="page-footer">
+            <strong>ECOWEB <span>/</span> PROYECTO ECODROP</strong>
+            <span>Prototipo escolar · Sistema en desarrollo</span>
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>

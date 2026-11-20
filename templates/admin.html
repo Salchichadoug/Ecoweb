@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - EcoWeb</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            margin-top: 0;
+            color: #5d6d7e;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+        }
+        .status-banner {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+        .status-banner.is-visible {
+            display: block;
+        }
+        .status-banner.is-success {
+            background-color: #eafaf1;
+            color: #1e8449;
+            border: 1px solid #a9dfbf;
+        }
+        .status-banner.is-error {
+            background-color: #fdedec;
+            color: #922b21;
+            border: 1px solid #f5b7b1;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #2c3e50;
+            color: #ffffff;
+        }
+        select, button {
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        select:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        button.btn-baja {
+            background-color: #e74c3c;
+            color: #ffffff;
+            border: none;
+        }
+        button.btn-alta {
+            background-color: #2ecc71;
+            color: #ffffff;
+            border: none;
+        }
+        .badge-activo {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .badge-inactivo {
+            color: #c0392b;
+            font-weight: bold;
+        }
+        .muted {
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="nav-links">
+            <a href="{{ url_for('inicio') }}">&larr; Volver al Dashboard</a>
+            <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+        </div>
+
+        <h1>Panel de Administración de Usuarios</h1>
+        <p class="subtitle">Gestioná los roles, modificaciones y bajas lógicas de las cuentas registradas vía OpenID / Google.</p>
+
+        <div id="status-banner" class="status-banner" role="status" aria-live="polite"></div>
+
+        <div class="table-wrap">
+            <table id="tabla-usuarios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Alta</th>
+                        <th>Baja lógica</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="8">Cargando usuarios...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function mostrarMensaje(mensaje, esError = false) {
+            const banner = document.querySelector("#status-banner");
+            if (!banner) return;
+
+            banner.textContent = mensaje;
+            banner.className = `status-banner is-visible ${esError ? "is-error" : "is-success"}`;
+        }
+
+        function formatearFecha(isoString) {
+            if (!isoString) return "—";
+            const fecha = new Date(isoString);
+            if (Number.isNaN(fecha.getTime())) return isoString;
+
+            return fecha.toLocaleString("es-AR", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
+
+        function crearCelda(texto, clase = "") {
+            const td = document.createElement("td");
+            if (clase) td.className = clase;
+            td.textContent = texto;
+            return td;
+        }
+
+        async function cargarUsuarios() {
+            const tbody = document.querySelector("#tabla-usuarios tbody");
+
+            try {
+                const response = await fetch("/api/usuarios");
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(data.error || "No se pudieron cargar los usuarios.");
+                }
+
+                tbody.replaceChildren();
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    const tr = document.createElement("tr");
+                    const td = document.createElement("td");
+                    td.colSpan = 8;
+                    td.textContent = "No hay usuarios registrados.";
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
+                    return;
+                }
+
+                data.forEach((u) => {
+                    const tr = document.createElement("tr");
+                    const estaActivo = Boolean(u.activo);
+                    const esAdmin = u.rol === "administrador";
+
+                    tr.appendChild(crearCelda(String(u.id)));
+                    tr.appendChild(crearCelda(u.nombre));
+                    tr.appendChild(crearCelda(u.email));
+
+                    // Selector de rol
+                    const tdRol = document.createElement("td");
+                    const selectRol = document.createElement("select");
+                    selectRol.disabled = esAdmin;
+
+                    [
+                        { value: "usuario", label: "Usuario" },
+                        { value: "trabajador", label: "Trabajador" },
+                        { value: "administrador", label: "Administrador" }
+                    ].forEach((opcion) => {
+                        const opt = document.createElement("option");
+                        opt.value = opcion.value;
+                        opt.textContent = opcion.label;
+                        opt.selected = u.rol === opcion.value;
+                        selectRol.appendChild(opt);
+                    });
+
+                    selectRol.addEventListener("change", () => {
+                        cambiarRol(u.id, selectRol.value);
+                    });
+                    tdRol.appendChild(selectRol);
+                    tr.appendChild(tdRol);
+
+                    // Estado activo / baja lógica
+                    const tdEstado = document.createElement("td");
+                    const spanEstado = document.createElement("span");
+                    spanEstado.className = estaActivo ? "badge-activo" : "badge-inactivo";
+                    spanEstado.textContent = estaActivo ? "Activo" : "Dado de baja";
+                    tdEstado.appendChild(spanEstado);
+                    tr.appendChild(tdEstado);
+
+                    // Fechas
+                    tr.appendChild(crearCelda(formatearFecha(u.fecha_creacion), "muted"));
+                    tr.appendChild(crearCelda(formatearFecha(u.fecha_baja), "muted"));
+
+                    // Botón de baja lógica / reactivación
+                    const tdAcciones = document.createElement("td");
+                    if (esAdmin) {
+                        const em = document.createElement("em");
+                        em.className = "muted";
+                        em.textContent = "Protegido";
+                        tdAcciones.appendChild(em);
+                    } else {
+                        const btn = document.createElement("button");
+                        btn.type = "button";
+                        btn.className = estaActivo ? "btn-baja" : "btn-alta";
+                        btn.textContent = estaActivo ? "Dar de baja" : "Reactivar";
+                        btn.addEventListener("click", () => {
+                            toggleActivo(u.id, estaActivo);
+                        });
+                        tdAcciones.appendChild(btn);
+                    }
+                    tr.appendChild(tdAcciones);
+
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Error al cargar usuarios:", error);
+                mostrarMensaje(error.message || "Error al cargar los usuarios.", true);
+            }
+        }
+
+        async function cambiarRol(id, nuevoRol) {
+            try {
+                const response = await fetch(`/api/usuarios/${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ rol: nuevoRol })
+                });
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(data.error || "No se pudo actualizar el rol.");
+                }
+
+                mostrarMensaje(data.mensaje || "Rol actualizado correctamente.");
+            } catch (error) {
+                mostrarMensaje(error.message || "Error al cambiar el rol.", true);
+            } finally {
+                await cargarUsuarios();
+            }
+        }
+
+        async function toggleActivo(id, estadoActual) {
+            const nuevoEstado = estadoActual ? 0 : 1;
+
+            try {
+                const response = await fetch(`/api/usuarios/${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ activo: nuevoEstado })
+                });
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(data.error || "No se pudo actualizar el estado.");
+                }
+
+                mostrarMensaje(data.mensaje || "Estado actualizado correctamente.");
+            } catch (error) {
+                mostrarMensaje(error.message || "Error al actualizar el estado.", true);
+            } finally {
+                await cargarUsuarios();
+            }
+        }
+
+        cargarUsuarios();
+    </script>
+</body>
+</html>
